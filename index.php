@@ -34,15 +34,21 @@ if (isset($_GET['action'])) {
     if ($_GET['action'] == 'pick') {
         $movie = $movies[$_GET['id']];
         echo '<h2>Hai scelto una copia di "'.$movie['title'].'"</h2>';
-        if ($movie['director'] == 'Jonny D') {
-            $price = calcola_sconto($movie['price']);
-        }
-        elseif ($movie['director'] == 'Jonny B') {
-            $price = calcola_sconto_Jonny_B($movie['price']);
-        }
-        else {
-            $price = $movie['price'];
-        }
+
+        $discountFactory = new DiscountFactory();
+        $discount = $discountFactory->build($movie['director']);
+        $price = $discount->getPrice($movie['price']);
+
+
+//        if ($movie['director'] == 'Jonny D') {
+//            $price = calcola_sconto($movie['price']);
+//        }
+//        elseif ($movie['director'] == 'Jonny B') {
+//            $price = calcola_sconto_Jonny_B($movie['price']);
+//        }
+//        else {
+//            $price = $movie['price'];
+//        }
 
         echo "<p>il film costa ".$price.'</p>';
         echo '<hr/>';
